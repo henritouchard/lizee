@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	frontBuildFolder = "./lizee/build"
+	frontBuildFolder = "./app/build"
 )
 
 // Server is the interface to interact with server
@@ -38,7 +38,7 @@ func (s *Server) productsAPI() {
 	// Setup route group for the API
 	productAPI := s.Group("/products")
 	productAPI.GET("/availability", checkProductAvailability)
-	productAPI.POST("/products", post)
+	productAPI.POST("/order", postOrder)
 
 	categoryAPI := s.Group("/categories")
 	categoryAPI.GET("/", listCategories)
