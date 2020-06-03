@@ -16,35 +16,37 @@ const IntroSection = () => (
 );
 
 function Home() {
-  const [trekInfo, setTrekInfo] = useState({});
+  const [trekInfo, setTrekInfo] = useState([{}]);
   const [products, setProducts] = useState(null);
   const [cart, setCart] = useState([]);
 
   // Asynchronous call to api to get choice's corresponding products
   useEffect(() => {
-    let { category, fromDate, toDate } = trekInfo;
-    if (category !== undefined && fromDate instanceof Date && toDate instanceof Date) {
-      // server accepts dates on format YYYY-MM-DD
-      fromDate = fromDate.toISOString().substr(0, 10);
-      toDate = toDate.toISOString().substr(0, 10);
+    let { category, fromDate, toDate } = trekInfo[0];
+    if (category !== undefined) {
       fetchAPI(
         serverAddr +
           availableProductsURL +
           category +
-          `
-      &fromDate=${fromDate}&toDate=${toDate}`,
+          `&fromDate=${fromDate}&toDate=${toDate}`,
         setProducts
       );
     }
   }, [trekInfo]);
 
+  const { fromDate, toDate } = trekInfo[0];
   return (
     <>
       <Hero setTrek={setTrekInfo}></Hero>
       {products === null ? (
         <IntroSection />
       ) : (
-        <ProductGrid products={products} cartProducts={cart} addToCart={setCart} />
+        <ProductGrid
+          dates={{ fromDate, toDate }}
+          products={products}
+          cartProducts={cart}
+          addToCart={setCart}
+        />
       )}
     </>
   );

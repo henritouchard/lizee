@@ -1,95 +1,28 @@
 package server
 
 import (
-	"database/sql"
-	"fmt"
 	"net/http"
-	"time"
+
+	"lizee/pkg/products"
 
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	productAvailabilityQuery = `
-	SELECT COUNT(*) 
-		FROM rental_order 
-		WHERE product=$1 
-			AND (start_date, end_date + INTERVAL '4 DAYS') 
-				OVERLAPS ($2::date - INTERVAL '2 DAYS', $3::date) 
-			IS FALSE;`
-	categoryQuery = `
-	SELECT p.id , p.name, p.stock - 
-	(
-		SELECT COUNT(*) 
-			FROM rental_order as r 
-			WHERE r.product = p.id
-				AND (r.start_date, r.end_date + INTERVAL '5 DAYS') OVERLAPS ($1::date - INTERVAL '2 DAYS', $2::date) 
-				IS TRUE
-	) AS availability, p.picture
-		FROM product as p WHERE cstr_category=$3
-	`
-)
-
-type productType struct {
-	ID           int    `json:"id"`
-	Name         string `json:"name"`
-	Availability int    `json:"availability"`
-	Picture      string `json:"picture"`
-}
-type categoryType struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-}
-
-type apiHandler interface {
-	AddAPI(string, string, func(*gin.Context)) error
-}
-
-// --> This is what we call an interface, in go any structure that satisfy following functions
-// can be provided to InitAPIStorage(). It allows to change db when needed without modifying this package
-// and avoid to share postgresql package dependencies with this package.
-type strorageInstance interface {
-	Query(string, ...interface{}) (*sql.Rows, error)
-	Prepare(string) (*sql.Stmt, error)
-	QueryRow(string, ...interface{}) *sql.Row
-}
-
-var db strorageInstance
-
-// InitAPIStorage will keep a pointer to db to interact with external packages
-func (router *Server) InitAPIStorage(s strorageInstance) {
-	db = s
-}
-
 func listCategories(c *gin.Context) {
-	rows, err := db.Query("SELECT * FROM category")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, rows)
-	}
-	result, err := rowsToJSON(rows)
+	categories, err := products.ListCategories()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
-
-	c.JSON(http.StatusOK, result)
+	c.JSON(http.StatusOK, categories)
 }
 
+// Correspond to the demand of exercise but to correct
 func checkProductAvailability(c *gin.Context) {
-	productID := c.Query("productID")
-	begin := c.Query("fromDate")
-	end := c.Query("toDate")
-
-	stmt, err := db.Prepare(productAvailabilityQuery)
-	if err != nil {
+	p := products.ProductQuery{}
+	if err := c.Bind(&p); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
-
-	start := time.Now()
-	row := stmt.QueryRow(productID, begin, end)
-	fmt.Printf("call took %v\n", time.Since(start))
-
-	var r int
-	err = row.Scan(&r)
+	r, err := products.CheckAvailabilityByProduct(&p)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
@@ -100,21 +33,12 @@ func checkProductAvailability(c *gin.Context) {
 }
 
 func checkCategoryAvailability(c *gin.Context) {
-	categoryID := c.Query("categoryID")
-	begin := c.Query("fromDate")
-	end := c.Query("toDate")
-
-	stmt, err := db.Prepare(categoryQuery)
-	if err != nil {
+	categoryQ := products.CategoryQuery{}
+	if err := c.Bind(&categoryQ); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
 
-	rows, err := stmt.Query(begin, end, categoryID)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, err)
-	}
-
-	result, err := rowsToJSON(rows)
+	result, err := products.CheckAvailabilityByCategory(&categoryQ)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
@@ -122,14 +46,21 @@ func checkCategoryAvailability(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func post(c *gin.Context) {
-	// var postMessage postMessage
-	// if err := c.ShouldBindJSON(&postMessage); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// }
+// postOrder is a handler used when user posts it's rental order
+// it will control availabilty of products and reserve it if is available
+func postOrder(c *gin.Context) {
+	var n []products.ProductOrder
+	// Deserialize json order to array of productOrder structures
+	if err := c.ShouldBindJSON(&n); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if _, err := products.ProcessRentalOrder(n); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "thank for your message",
-		"error":   nil,
+		"error": nil,
 	})
 }

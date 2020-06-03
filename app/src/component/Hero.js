@@ -73,8 +73,8 @@ function Hero({ setTrek }) {
   const [categories, setCategories] = useState(null);
   const [choice, setChoice] = useState({
     category: null,
-    fromDate: null,
-    toDate: null,
+    fromDate: new Date().toISOString().substr(0, 10),
+    toDate: new Date().toISOString().substr(0, 10),
   });
 
   // Asynchronous call to api to get existing categories
@@ -88,8 +88,9 @@ function Hero({ setTrek }) {
       choice.category !== null &&
       choice.fromDate !== null &&
       choice.toDate !== null
-    )
-      setTrek(choice);
+    ) {
+      setTrek((oldState) => [choice]);
+    }
   };
 
   return (

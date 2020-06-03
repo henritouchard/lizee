@@ -4,12 +4,11 @@ import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 
 function DatePicker({ label, innerLabel, setChoice, choice }) {
-  const [selectedDate, setSelectedDate] = useState(new Date(Date.now()));
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleDateChange = (date) => {
-    //  let d = new Date();
     let c = choice;
-    c[innerLabel] = date;
+    c[innerLabel] = date.toISOString().substr(0, 10);
     setChoice(c);
     setSelectedDate(date);
   };

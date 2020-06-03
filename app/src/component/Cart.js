@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { MainButton } from "./styles/Buttons";
 
-function Cart({ addToCart, cartProducts }) {
+function Cart({ addToCart, cartProducts, dates }) {
   const [order, setOrder] = useState(false);
 
   // Delete cart item
@@ -18,14 +18,12 @@ function Cart({ addToCart, cartProducts }) {
   };
 
   useEffect(() => {
-    console.log(JSON.stringify(cartProducts));
     if (order === true) {
       postAPI(serverAddr + orderURL, JSON.stringify(cartProducts), addToCart);
       setOrder(false);
     }
   }, [order, cartProducts, addToCart]);
 
-  console.log(cartProducts);
   return (
     <>
       <ul>
@@ -35,7 +33,7 @@ function Cart({ addToCart, cartProducts }) {
         ) : (
           cartProducts.map((productInfo) => {
             const { product, quantity } = productInfo;
-            const { picture, availability, name, id } = product;
+            const { picture, name, id } = product;
             return (
               <li key={id}>
                 <div

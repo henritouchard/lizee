@@ -1,11 +1,11 @@
-package server
+package utils
 
 import (
 	"database/sql"
 )
 
-// rowsToJSON transform result of sql query to []map[string]interface{} to allow JSON convertion
-func rowsToJSON(rows *sql.Rows) ([]map[string]interface{}, error) {
+// RowsToJSON transform result of sql query to []map[string]interface{} to allow JSON convertion
+func RowsToJSON(rows *sql.Rows) ([]map[string]interface{}, error) {
 	// an array of JSON objects
 	// the map key is the field name
 	var objects []map[string]interface{}

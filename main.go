@@ -1,6 +1,7 @@
 package main
 
 import (
+	"lizee/pkg/products"
 	"lizee/pkg/server"
 	"lizee/pkg/storage"
 )
@@ -24,8 +25,9 @@ func main() {
 	}
 	defer postgres.CloseConnection()
 
+	// provide storage interface to products package
+	products.InitAPIStorage(postgres)
 	// Init Server
 	serverInstance := server.Setup()
-	serverInstance.InitAPIStorage(postgres)
 	serverInstance.Serve(serverPort)
 }

@@ -14,9 +14,21 @@ function a11yProps(index) {
   };
 }
 
-function ProductGrid({ products, addToCart, cartProducts }) {
+function ProductGrid({ products, addToCart, cartProducts, dates }) {
   const [newProduct, setNewProduct] = useState(null);
   const [selectedTab, setSelectedTab] = useState(0);
+
+  const handleNewProducts = (product, quantity) => {
+    addToCart([
+      ...cartProducts,
+      {
+        product,
+        quantity,
+        fromDate: dates.fromDate,
+        toDate: dates.toDate,
+      },
+    ]);
+  };
 
   const handleChange = (event, tab) => {
     setSelectedTab(tab);
@@ -30,6 +42,7 @@ function ProductGrid({ products, addToCart, cartProducts }) {
     }
   }, [newProduct, addToCart, cartProducts]);
 
+  const inCart = cartProducts;
   return (
     <>
       <Paper square>
@@ -45,7 +58,7 @@ function ProductGrid({ products, addToCart, cartProducts }) {
           <StyledTab active={selectedTab === 0 ? 1 : 0} label="Shop" {...a11yProps(0)} />
           <StyledTab
             active={selectedTab === 1 ? 1 : 0}
-            label={`Cart(${cartProducts.length})`}
+            label={`Cart(${inCart.length})`}
             disabled={!cartProducts || cartProducts.length === 0}
             {...a11yProps(1)}
           />
@@ -66,7 +79,7 @@ function ProductGrid({ products, addToCart, cartProducts }) {
                   <ProductCard>
                     <h3>{name}</h3>
                     <img src={picture} style={{ width: "200px" }} alt={name}></img>
-                    <QuantityPicker product={product} addToCart={setNewProduct} />
+                    <QuantityPicker product={product} addToCart={handleNewProducts} />
                     <p style={{ fontSize: "12px", color: "grey" }}>
                       In stock : {availability}
                     </p>
@@ -79,7 +92,7 @@ function ProductGrid({ products, addToCart, cartProducts }) {
       </TabPanel>
 
       <TabPanel value={selectedTab} index={1}>
-        <Cart addToCart={addToCart} cartProducts={cartProducts}></Cart>
+        <Cart dates={dates} addToCart={addToCart} cartProducts={cartProducts}></Cart>
       </TabPanel>
     </>
   );

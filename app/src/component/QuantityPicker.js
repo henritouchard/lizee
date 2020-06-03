@@ -23,7 +23,7 @@ function QuantityPicker({ product, addToCart, defaultQuantity = 0 }) {
   };
 
   const ValidateProduct = () => {
-    if (quantity > 0) addToCart({ product, quantity });
+    if (quantity > 0) addToCart(product, quantity);
     setQuantity(0);
   };
 
