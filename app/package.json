@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && mv build ../frontBuild",
+    "build": "react-scripts build && rm -rf ../frontBuild && mv build ../frontBuild",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
