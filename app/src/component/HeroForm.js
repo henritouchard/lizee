@@ -13,8 +13,8 @@ const Div = styled.div`
   position: relative;
   top: 80%;
   width: 90%;
-  @media (max-width: 800px) {
-    top: 70%;
+  @media (max-width: 1200px) {
+    top: 55%;
   }
 `;
 

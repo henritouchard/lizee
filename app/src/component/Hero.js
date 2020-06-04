@@ -20,10 +20,9 @@ const PageTitle = styled.h1`
 
 const Background = styled.div`
   width: 100vw;
-  height: 95vh;
+  height: 93vh;
   background: url(${({ bgImage }) => bgImage}) center;
   background-size: cover;
-  margin-bottom: 50px;
 `;
 
 const FormPlaceHolder = styled.div`

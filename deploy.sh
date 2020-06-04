@@ -8,7 +8,7 @@ cd ../
 if [ -d "$BUILTFOLDER" ]; then
     sudo docker-compose up --b
 else
-    echo "ERROR: $BUILTFOLDER does not exist. you can build it by yourself in ./app folder"
+    echo "ERROR: $BUILTFOLDER does not exist. An error probably occured during npm build. You can build it by yourself in ./app folder"
     exit 1
 fi
 
