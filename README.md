@@ -1,0 +1,65 @@
+# Lizee app for Adrenaline Heroes
+
+
+
+## Installation
+
+pour faciliter l'installation et éviter de devoir installer golang et postgresql etc tout s'exécutera au travers de containers docker, à l'exeption du build de l'app react (je ne doute pas qu'npm soit installé sur votre machine.
+
+### build de l'app react
+
+```bash
+cd ./app && npm install && npm run build
+```
+
+### build du server et initialisation de la base postgresql
+
+```bash
+sudo docker-compose up --b
+```
+
+### première connexion à l'application:
+
+Le serveur écoute le port 5000
+sur chrome ou firefox: http://localhost:5000/ devrait charger l'application si aucune erreur ne s'est produite pendant le déploiement.
+
+## Choix techniques
+
+### serveur
+
+J'ai choisi de poursuivre avec golang, c'est un langage intéressant notamment en ce qui concerne la compatibilité avec les api json.
+En effet une simple structure suivi d'un tag permet de récupérer les données dans le format voulu (une structure).
+
+#### améliorations possibles :
+
+- les requêtes envoyées pour la souscription d'une location ne sont pas lock, je n'ai pas encore eu le temps  d'implémenter cette fonctionnalité, il faut ajouter un verrouillage de la base entre le moment où le serveur controle si les produits sont disponibles et celui où il insert la commande.
+- Ne pas renvoyer systématiquement l'intégralité de l'objet product dans le cas de la commande erronée mais simplement l'id pour limiter la donnée en circulation. Ce sera simple à corriger.
+
+### base de donnée
+
+J'ai utilisé Postgresql, c'est une base de donnée assez classique pour ce genre de besoins.
+
+#### améliorations possibles :
+
+- Changer le mode de stockage des commandes sans affecter les performances de la base, il serait pratique de grouper touts les id des commandes dans un même champs de la table rental_order, mais je pense que les performances seraient affecter si on utilisait un tableau. à tester.
+- Compléter la base de sorte que les commandes correspondent à un utilisateur.
+
+### React.js
+
+Parce que c'était demandé explicitement.
+
+#### améliorations possibles :
+
+- Utiliser redux ou un autre gestionnaire d'état pour éviter de promener les hooks à travers toute l'arborescence des composants react. Je pensais faire juste le widget au dépard, je me disais que le faire sans ne serait pas un problème.
+- Ne pas renvoyer l'objet entier dans le cas de la commande mais simplement l'id, Ce sera simple à corriger.
+- Créer un thème global plus élaboré.
+- ajouter un prix aux items.
+
+
+
+
+
+
+
+
+

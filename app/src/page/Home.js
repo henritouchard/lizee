@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { fetchAPI, serverAddr, availableProductsURL } from "../utils/Axios";
+
 import Hero from "../component/Hero";
 import ProductGrid from "../component/ProductGrid";
+import AlertDialog from "../component/Modal";
 
 const IntroSection = () => (
   <div style={{ padding: "0 15%", color: "black", fontSize: "20px" }}>
@@ -22,32 +24,32 @@ function Home() {
 
   // Asynchronous call to api to get choice's corresponding products
   useEffect(() => {
-    let { category, fromDate, toDate } = trekInfo[0];
+    let { category, from, to } = trekInfo[0];
     if (category !== undefined) {
       fetchAPI(
-        serverAddr +
-          availableProductsURL +
-          category +
-          `&fromDate=${fromDate}&toDate=${toDate}`,
+        serverAddr + availableProductsURL + category + `&from=${from}&to=${to}`,
         setProducts
       );
     }
   }, [trekInfo]);
 
-  const { fromDate, toDate } = trekInfo[0];
+  const { from, to } = trekInfo[0];
+
   return (
     <>
       <Hero setTrek={setTrekInfo}></Hero>
-      {products === null ? (
-        <IntroSection />
-      ) : (
-        <ProductGrid
-          dates={{ fromDate, toDate }}
-          products={products}
-          cartProducts={cart}
-          addToCart={setCart}
-        />
-      )}
+      <div id="bottomSection" style={{ height: "500px" }}>
+        {products === null ? (
+          <IntroSection />
+        ) : (
+          <ProductGrid
+            dates={{ from, to }}
+            products={products}
+            cartProducts={cart}
+            addToCart={setCart}
+          />
+        )}
+      </div>
     </>
   );
 }

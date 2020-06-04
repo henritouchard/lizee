@@ -24,8 +24,8 @@ function ProductGrid({ products, addToCart, cartProducts, dates }) {
       {
         product,
         quantity,
-        fromDate: dates.fromDate,
-        toDate: dates.toDate,
+        from: dates.from,
+        to: dates.to,
       },
     ]);
   };

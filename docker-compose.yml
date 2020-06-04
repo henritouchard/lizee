@@ -15,16 +15,21 @@ services:
         ipv4_address: 172.28.1.1
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
-  adminer:
-    image: adminer
-    restart: always
+  # Deploy server
+  app:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - "5000:5000"
     networks:
       testing_net:
         ipv4_address: 172.28.1.2
+    depends_on:
+      - db
 
+# Create network bridge between docker instances
 networks:
   testing_net:
     ipam:

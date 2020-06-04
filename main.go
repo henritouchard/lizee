@@ -1,6 +1,7 @@
 package main
 
 import (
+	"lizee/pkg/errortypes"
 	"lizee/pkg/products"
 	"lizee/pkg/server"
 	"lizee/pkg/storage"
@@ -8,7 +9,7 @@ import (
 
 const (
 	serverPort = ":5000"
-
+	// Better to store in docker env
 	host     = "172.28.1.1"
 	dbport   = 5432
 	user     = "dev"
@@ -21,7 +22,8 @@ func main() {
 	postgres, err := storage.Connect(host, dbport, user, password, dbName)
 	if err != nil {
 		// Impossible to work without so we stop the program
-		panic(err)
+		e := errortypes.New(errortypes.DbConnection + err.Error())
+		panic(e)
 	}
 	defer postgres.CloseConnection()
 

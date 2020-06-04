@@ -5,6 +5,8 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
+import { Colors } from "./Theme";
+
 export const ProductCard = styled.div`
   border-radius: 2px;
   height: auto;
@@ -77,8 +79,9 @@ export function TabPanel(props) {
 }
 
 export const StyledTab = styled(Tab)`
-  background-color: ${({ active }) => (active ? "#d09237" : "white")}!important;
+  background-color: ${({ active }) =>
+    active ? Colors.primary : Colors.secondary}!important;
   color: ${({ active, disabled }) =>
-    active ? "white" : !disabled && "#d09237"}!important;
+    active ? Colors.secondary : !disabled && Colors.primary} !important;
   font-weight: 700 !important;
 `;

@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-
 import SelectInput from "./SelectInput";
 import DatePicker from "./DatePicker";
 
-const GridContainer = styled.div`
+import Grid from "@material-ui/core/Grid";
+import { ButtonPrimary } from "./styles/Buttons";
+import { Colors } from "./styles/Theme";
+
+const Div = styled.div`
   margin: auto;
   position: relative;
   top: 80%;
@@ -18,7 +19,7 @@ const GridContainer = styled.div`
 `;
 
 const StyledGrid = styled(Grid)`
-  background-color: white;
+  background-color: ${Colors.secondary};
   align-content: space-around;
   justify-content: space-around;
   box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.5);
@@ -26,39 +27,26 @@ const StyledGrid = styled(Grid)`
 
 function HeroForm({ categories, setChoice, choice, validate }) {
   return (
-    <GridContainer>
+    <Div>
       <StyledGrid container justify="space-between">
         <SelectInput categories={categories} setChoice={setChoice} choice={choice} />
         <DatePicker
           label="Start Date"
-          innerLabel="fromDate"
+          innerLabel="from"
           setChoice={setChoice}
           choice={choice}
         />
         <DatePicker
           label="End Date"
-          innerLabel="toDate"
+          innerLabel="to"
           setChoice={setChoice}
           choice={choice}
         />
-        <Button
-          onClick={() => validate()}
-          style={{
-            flex: 1,
-            width: "25%",
-            minWidth: "250px",
-            padding: "10px 10px 0",
-            borderRadius: "0px",
-            backgroundColor: "#d09237",
-            color: "white",
-            fontWeight: "900",
-            fontSize: "20px",
-          }}
-        >
-          Start
-        </Button>
+        <ButtonPrimary onClick={() => validate()} as="a" href="#bottomSection">
+          START
+        </ButtonPrimary>
       </StyledGrid>
-    </GridContainer>
+    </Div>
   );
 }
 

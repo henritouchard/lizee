@@ -2,6 +2,9 @@ package products
 
 import "lizee/pkg/utils"
 
+// This file contains all related to product's categories API
+// It contains types and functions to execute query to database
+
 // Category defines basic informations of product's categories
 type Category struct {
 	ID   int    `json:"id"`
@@ -11,8 +14,8 @@ type Category struct {
 // CategoryQuery defines query we get for products availability corresponding to category
 type CategoryQuery struct {
 	CategoryID int    `form:"categoryID"`
-	FromDate   string `form:"fromDate"`
-	ToDate     string `form:"toDate"`
+	FromDate   string `form:"from"`
+	ToDate     string `form:"to"`
 }
 
 // ListCategories get categories from storage and returns it as serialize-ready

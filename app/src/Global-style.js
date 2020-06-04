@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   :root {
-      font-size: ${px2vh(30)};
+      font-size: ${px2vh(35)};
     }
     h1{
       font-family: 'Poppins';
@@ -36,8 +36,11 @@ const GlobalStyle = createGlobalStyle`
       color: white;
     }
 
-    a{
-      color: inherit; 
+    a {
+      all: initial;
+      * {
+        all: unset;
+      }
     }
     li{
       list-style-type: none;

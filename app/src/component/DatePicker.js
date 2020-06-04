@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, DatePicker as Picker } from "@material-ui/pickers";
 
 function DatePicker({ label, innerLabel, setChoice, choice }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -16,7 +16,7 @@ function DatePicker({ label, innerLabel, setChoice, choice }) {
   return (
     <div style={{ width: "25%", flex: 1, padding: "10px 10px 0" }}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
+        <Picker
           label={label}
           format="yyyy/MM/dd"
           value={selectedDate}

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
+import { Colors } from "./styles/Theme";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { CounterButton } from "./styles/Buttons";
 
 const CounterValue = styled.div`
   border-radius: 0px;
-  border: 1px solid #d09237;
+  border: 1px solid ${Colors.primary};
   padding-top: 5px;
 `;
 
@@ -35,8 +35,8 @@ function QuantityPicker({ product, addToCart, defaultQuantity = 0 }) {
         <CounterButton onClick={() => handleIncrement()}>+</CounterButton>
         <CounterButton
           style={{
-            backgroundColor: "#d09237",
-            color: "white",
+            backgroundColor: Colors.primary,
+            color: Colors.secondary,
             fontSize: "18px",
             height: "100%",
           }}

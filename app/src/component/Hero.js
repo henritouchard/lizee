@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { fetchAPI, serverAddr, categoryListURL } from "../utils/Axios";
 import styled from "styled-components";
 
+import { fetchAPI, serverAddr, categoryListURL } from "../utils/Axios";
 import HeroForm from "../component/HeroForm";
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import { Colors } from "../component/styles/Theme";
 import HeroImg from "../assets/mount.jpg";
 
 const PageTitle = styled.h1`
@@ -30,9 +32,9 @@ const FormPlaceHolder = styled.div`
   top: 80%;
   width: 90%;
   height: 90px;
-  background-color: white;
+  background-color: ${Colors.secondary};
   text-align: center;
-  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 5px ${Colors.shadow};
   @media (max-width: 800px) {
     top: 70%;
   }
@@ -73,8 +75,8 @@ function Hero({ setTrek }) {
   const [categories, setCategories] = useState(null);
   const [choice, setChoice] = useState({
     category: null,
-    fromDate: new Date().toISOString().substr(0, 10),
-    toDate: new Date().toISOString().substr(0, 10),
+    from: new Date().toISOString().substr(0, 10),
+    to: new Date().toISOString().substr(0, 10),
   });
 
   // Asynchronous call to api to get existing categories
@@ -86,8 +88,8 @@ function Hero({ setTrek }) {
     if (
       choice != null &&
       choice.category !== null &&
-      choice.fromDate !== null &&
-      choice.toDate !== null
+      choice.from !== null &&
+      choice.to !== null
     ) {
       setTrek((oldState) => [choice]);
     }
@@ -95,7 +97,7 @@ function Hero({ setTrek }) {
 
   return (
     <Background bgImage={HeroImg}>
-      <PageTitle>Ad summitatem</PageTitle>
+      <PageTitle>Adrenaline Heroes</PageTitle>
       {renderForm(categories, setChoice, choice, onValidateChoice)}
     </Background>
   );

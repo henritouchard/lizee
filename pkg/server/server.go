@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	frontBuildFolder = "./app/build"
+	frontBuildFolder = "./frontBuild"
 )
 
 // Server is the interface to interact with server
@@ -34,6 +34,7 @@ func Setup() *Server {
 	return server
 }
 
+// productsAPI initialize all API concerning products
 func (s *Server) productsAPI() {
 	// Setup route group for the API
 	productAPI := s.Group("/products")
@@ -43,6 +44,10 @@ func (s *Server) productsAPI() {
 	categoryAPI := s.Group("/categories")
 	categoryAPI.GET("/", listCategories)
 	categoryAPI.GET("/products", checkCategoryAvailability)
+
+	// Exercize purpose basic API
+	avaiabilityAPI := s.Group("/availability")
+	avaiabilityAPI.POST("/", checkProductsAvailability)
 }
 
 // Serve starts server on provided port

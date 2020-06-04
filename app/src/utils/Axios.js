@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const serverAddr = "http://localhost:3000/";
+export const serverAddr = "http://localhost:5000/";
 export const availableProductsURL = "categories/products?categoryID=";
 export const categoryListURL = "categories/";
 export const orderURL = "products/order/";
@@ -14,11 +14,11 @@ export async function fetchAPI(query, callback) {
     });
 }
 
-export async function postAPI(query, params, callback) {
+export async function postAPI(query, params, successCallback, errorCallback) {
   await axios
     .post(query, params)
-    .then((r) => callback([]))
+    .then((r) => successCallback([]))
     .catch((error) => {
-      callback({ error: "An Error occured please reload the page" });
+      errorCallback(error.response.data);
     });
 }
