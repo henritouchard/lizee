@@ -10,7 +10,7 @@ export async function fetchAPI(query, callback) {
     .get(query)
     .then((r) => callback(r.data))
     .catch((error) => {
-      callback({ error: "An Error occured please reload the page" });
+      callback({ error: "An Error occured please reload the page", details: error });
     });
 }
 
@@ -19,6 +19,7 @@ export async function postAPI(query, params, successCallback, errorCallback) {
     .post(query, params)
     .then((r) => successCallback([]))
     .catch((error) => {
-      errorCallback(error.response.data);
+      if (error.response && error.response.data) errorCallback(error.response.data);
+      else alert(error);
     });
 }
