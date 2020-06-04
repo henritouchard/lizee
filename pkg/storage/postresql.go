@@ -3,7 +3,10 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"time"
 
+	// Allows go to compile postgresql driver
 	_ "github.com/lib/pq"
 )
 
@@ -12,18 +15,37 @@ type SQLInstance struct {
 	*sql.DB
 }
 
+// Ping estabish connection to database
+// it will execute several (6) retry in
+// case of failure before returning error
+func Ping(db *sql.DB) error {
+	err := db.Ping()
+	retry := 0
+	for err != nil {
+		log.Printf("Error when ping database. Retry %d/6", retry)
+		time.Sleep(10 * time.Second)
+		err = db.Ping()
+		retry++
+		if retry > 6 {
+			return err
+		}
+	}
+	return nil
+}
+
 // Connect open connection to postgresql instance
 func Connect(host string, port int, user string, pwd string, dbName string) (*SQLInstance, error) {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, pwd, dbName)
+	// Initilize db type and drivers but do not connect
 	db, err := sql.Open("postgres", psqlInfo)
-
-	// Establish connection with db
-	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
+
+	// Establish connection with db
+	err = Ping(db)
 
 	return &SQLInstance{db}, err
 }
