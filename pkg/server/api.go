@@ -92,3 +92,21 @@ func postOrder(c *gin.Context) {
 		"error": nil,
 	})
 }
+
+// modifyQuantity modify quantity of provided product
+func modifyQuantity(c *gin.Context) {
+	p := products.ProductQuantity{}
+	// Deserialize json order to array of productOrder structures
+	if err := c.ShouldBindJSON(&p); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := products.ModifyProductQuantity(&p)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, "ok")
+}

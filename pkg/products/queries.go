@@ -47,4 +47,5 @@ const (
 	queryInsert = `
 	INSERT INTO rental_order(start_date, end_date, returned, product, quantity) VALUES($3, $4, FALSE, $1, $2);
 	`
+	queryModifyQuantity = `UPDATE product SET stock=$2 WHERE id=$1`
 )

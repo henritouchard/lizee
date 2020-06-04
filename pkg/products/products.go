@@ -44,6 +44,12 @@ type ProductQuery struct {
 	ToDate    string `form:"to" json:"to"`
 }
 
+// ProductQuantity defines data we get from API for modifying products quantity
+type ProductQuantity struct {
+	ProductID int `json:"product_id"`
+	Quantity  int `json:"quantity"`
+}
+
 // ProductOrder defines basic informations concerning product rental order
 type ProductOrder struct {
 	Product  Product `json:"product"`
@@ -157,4 +163,21 @@ func AllAvailable(c *ProductQuery) ([]map[string]interface{}, error) {
 	}
 
 	return utils.RowsToJSON(rows)
+}
+
+// ModifyProductQuantity update product quantity
+// it should not be used without caution if you don't
+// want to get negatives quantity products on the iterface
+func ModifyProductQuantity(p *ProductQuantity) error {
+	// No error found, prepare db statement
+	insertStmt, err := db.Prepare(queryModifyQuantity)
+	if err != nil {
+		return err
+	}
+	// Execute queries.
+	// TODO: find a way to aggregate queries and execute everything in once
+
+	_, err = insertStmt.Exec(p.ProductID, p.Quantity)
+
+	return err
 }

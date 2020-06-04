@@ -38,15 +38,35 @@ func Setup() *Server {
 func (s *Server) productsAPI() {
 	// Setup route group for the API
 	productAPI := s.Group("/products")
+	// Check if one product is available
+	// ====> GET http://localhost:5000/products/availability?product_id=6&from=2020-06-04&to=2020-06-05
 	productAPI.GET("/availability", checkProductAvailability)
+	// Pass an order
+	// ====> POST http://localhost:5000/products/order
+	// ====> [{"product":{"availability":4,"id":1,"name":"tente trekking UL3","picture":""},"quantity":1,"from":"2020-06-03","to":"2020-06-04"}]
 	productAPI.POST("/order", postOrder)
 
 	categoryAPI := s.Group("/categories")
+	// Get all existing categories of product
+	// ====> GET http://localhost:5000/categories
 	categoryAPI.GET("/", listCategories)
+	// Check which products are available with category
+	// ====> GET http://localhost:5000/categories/products?categoryID=1&from=2020-06-04&to=2020-06-05
 	categoryAPI.GET("/products", checkCategoryAvailability)
 
 	// Exercize purpose basic API
 	avaiabilityAPI := s.Group("/availability")
+	// Modify quantity of corresponding product in database
+	// =====> POST to http://localhost:5000/availability/changeQuantity
+	// =====> {"product_id":int, "quantity": int}
+	// note that product_id is integer anywhere else than
+	// checkProductsAvailability to correspond to your demand.
+	avaiabilityAPI.POST("/modifyquantity", modifyQuantity)
+	// Get all available product between these dates
+	// Notice that returned product_id is string here,
+	// to correspond to your demand.
+	// =====> POST http://localhost:5000/availability/
+	// =====> {"from":"2023-06-04","to":"2023-06-05"}
 	avaiabilityAPI.POST("/", checkProductsAvailability)
 }
 
