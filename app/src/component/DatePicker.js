@@ -22,9 +22,6 @@ function DatePicker({ label, innerLabel, setChoice, choice }) {
           value={selectedDate}
           autoOk
           onChange={handleDateChange}
-          KeyboardButtonProps={{
-            "aria-label": "change date",
-          }}
           style={{ width: "100%", minWidth: "250px" }}
         />
       </MuiPickersUtilsProvider>

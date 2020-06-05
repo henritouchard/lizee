@@ -19,15 +19,26 @@ function ProductGrid({ products, addToCart, cartProducts, dates }) {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const handleNewProducts = (product, quantity) => {
-    addToCart([
-      ...cartProducts,
-      {
-        product,
-        quantity,
-        from: dates.from,
-        to: dates.to,
-      },
-    ]);
+    let existing = false;
+    let cp = cartProducts;
+    cp.forEach((element) => {
+      if (element.product.id === product.id) {
+        element.quantity += quantity;
+        existing = true;
+      }
+    });
+    if (existing) addToCart(cp);
+    else {
+      addToCart([
+        ...cartProducts,
+        {
+          product,
+          quantity,
+          from: dates.from,
+          to: dates.to,
+        },
+      ]);
+    }
   };
 
   const handleChange = (event, tab) => {

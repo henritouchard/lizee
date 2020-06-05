@@ -3,7 +3,6 @@ import { fetchAPI, serverAddr, availableProductsURL } from "../utils/Axios";
 
 import Hero from "../component/Hero";
 import ProductGrid from "../component/ProductGrid";
-import AlertDialog from "../component/Modal";
 
 const IntroSection = () => (
   <div style={{ padding: "0 15%", color: "black", fontSize: "20px" }}>

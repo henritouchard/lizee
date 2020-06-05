@@ -20,8 +20,10 @@ export const ButtonPrimary = styled(Button)`
   min-width: 250px !important;
   padding: 10px 10px 10px 0 !important;
   border-radius: 0px !important;
-  background-color: ${Colors.primary} !important;
+  background-color: ${({ disabled }) =>
+    disabled ? Colors.grey : Colors.primary} !important;
   color: ${Colors.secondary} !important;
   font-weight: 900 !important;
   font-size: 20px !important;
+  /* cursor: default; */
 `;

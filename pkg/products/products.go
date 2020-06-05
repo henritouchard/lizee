@@ -60,9 +60,9 @@ type ProductOrder struct {
 
 // UnAvailable is returned when you asked unavailable products quantity
 type UnAvailable struct {
-	Product   Product `json:"product"`
-	Asked     int     `json:"quantity"`
-	Available int     `json:"availability"`
+	Product   int `json:"product_id"`
+	Asked     int `json:"quantity"`
+	Available int `json:"availability"`
 }
 
 // Available is returned when you query alla available products
@@ -115,7 +115,7 @@ func ProcessRentalOrder(orders []ProductOrder) ([]UnAvailable, error) {
 			return nil, err
 		}
 		if available < order.Quantity {
-			unavailables = append(unavailables, UnAvailable{order.Product, order.Quantity, available})
+			unavailables = append(unavailables, UnAvailable{order.Product.ID, order.Quantity, available})
 		}
 	}
 

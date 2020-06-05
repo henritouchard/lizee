@@ -4,10 +4,10 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 import { Colors } from "./styles/Theme";
 
-function CartProduct({ products, onDelete, withError }) {
+function CartProduct({ products, onDelete }) {
   return products.map((productInfo) => {
-    const { product, quantity, availability } = productInfo;
-    const { picture, name, id } = product;
+    const { product, quantity } = productInfo;
+    const { picture, name, id, availability } = product;
     return (
       <li key={id}>
         <div
@@ -21,13 +21,16 @@ function CartProduct({ products, onDelete, withError }) {
           <img src={picture} style={{ width: "100px" }} alt={name}></img>
           <h3 style={{ color: "black", margin: "auto", width: "300px" }}>{name}</h3>
           <div style={{ margin: "auto" }}>
-            <p style={{ color: "black" }}>Quantity: {quantity}</p>
-            {withError ? (
-              <p style={{ color: Colors.warning }}>Available: {availability}</p>
-            ) : null}
+            {availability < quantity ? (
+              <p style={{ color: Colors.warning }}>
+                You asked {quantity} but only {availability} are available.
+              </p>
+            ) : (
+              <p style={{ color: "black" }}>Quantity: {quantity}</p>
+            )}
           </div>
           <div style={{ textAlign: "center", margin: "auto" }}>
-            <IconButton aria-label="delete" onClick={() => onDelete(id, withError)}>
+            <IconButton aria-label="delete" onClick={() => onDelete(id)}>
               <DeleteForeverIcon fontSize="large" style={{ color: Colors.warning }} />
             </IconButton>
           </div>
