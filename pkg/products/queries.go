@@ -46,7 +46,7 @@ const (
 	`
 
 	queryCheckAllAvailable = `
-	SELECT cast(p.id as text) as product_id, p.stock - (
+	SELECT p.id as product_id, p.stock - (
 		SELECT COALESCE(SUM(r.quantity), 0) as total
 		FROM rental_order as r 
 		WHERE r.product = p.id

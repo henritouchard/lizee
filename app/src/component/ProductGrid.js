@@ -53,7 +53,7 @@ function ProductGrid({ products, addToCart, cartProducts, dates }) {
     }
   }, [newProduct, addToCart, cartProducts]);
 
-  const inCart = cartProducts;
+  const inCart = cartProducts.length;
   return (
     <>
       <Paper square>
@@ -69,8 +69,8 @@ function ProductGrid({ products, addToCart, cartProducts, dates }) {
           <StyledTab active={selectedTab === 0 ? 1 : 0} label="Shop" {...a11yProps(0)} />
           <StyledTab
             active={selectedTab === 1 ? 1 : 0}
-            label={`Cart(${inCart.length})`}
-            disabled={!cartProducts || cartProducts.length === 0}
+            label={`Cart(${inCart})`}
+            disabled={!cartProducts || inCart === 0}
             {...a11yProps(1)}
           />
         </Tabs>

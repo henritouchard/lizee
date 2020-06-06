@@ -83,13 +83,14 @@ func postOrder(c *gin.Context) {
 		return
 	}
 
-	if product, err := products.ProcessRentalOrder(p); err != nil {
+	product, err := products.ProcessRentalOrder(p)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error(), "product": product})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
+		"ok": product,
 	})
 }
 

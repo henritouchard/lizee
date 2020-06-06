@@ -63,8 +63,6 @@ func (s *Server) productsAPI() {
 	// checkProductsAvailability to correspond to your demand.
 	avaiabilityAPI.POST("/modifyquantity", modifyQuantity)
 	// Get all available product between these dates
-	// Notice that returned product_id is string here,
-	// to correspond to your demand.
 	// =====> POST http://localhost:5000/availability/
 	// =====> {"from":"2023-06-04","to":"2023-06-05"}
 	avaiabilityAPI.POST("/", checkProductsAvailability)
